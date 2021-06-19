@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.core.min.js"></script>
+    <script>
+      function downloadFile() {
+        // 动态节点的创建方式, 避免重复创建同一个对象
+        if (!document.getElementById('readLocalFile')) {
+          // 创建一个<input type="file">标签
+          let inputFile = document.createElement("input");
+          inputFile.setAttribute("id", "readLocalFile");
+          inputFile.setAttribute("type", "file");
+          inputFile.setAttribute("accept", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel");
+          inputFile.setAttribute("multiple", false);  //是否可以多选。这里设置为否
+          // inputFile.click();                       //相当于自动点击了inputFile框
+          document.body.appendChild(inputFile);
+          // 为什么这里会返回false呢?
+          console.log(inputFile instanceof File, '=======================');
+
+          // 给dom元素添加了一个事件监听函数
+          document.getElementById('readLocalFile').addEventListener('change', function (e) {   //选择文件后执行, e是一个Event对象
+            let files = e.target.files;
+            // files是一个FileList对象, 因为可以选择多个, 这里只让选择了一个
+            if (files.length == 0) return;
+            let file = files[0];
+            let reader = new FileReader();
+            reader.readAsBinaryString(file);
+            reader.onload = function (e) {   //处理load事件。读取操作完成时触发。
+              let data = e.target.result;    // result属性就是读取的文件信息
+              let workbook = XLSX.read(data, {type: 'binary'}); //XLSX：/xlsx.core.min.js 通过XLSX.read(data, {type: type})方法读取excel 后面介绍
+              let sheetNames = workbook.SheetNames; // 工作表名称集合
+              let worksheet = workbook.Sheets[sheetNames[0]]; // 这里我们只读取第一张sheet
+              // 这种解析出来的是key-value的对象, key是表头
+              let json = XLSX.utils.sheet_to_json(worksheet);
+              console.log(json);
+              console.log(typeof json);
+              document.getElementById('readLocalFile').value = null; //读取后清空
+            };
+          });
+        } else {
+          document.getElementById('readLocalFile');  //已有dom元素则点击
+        }
+      }
+    </script>
+</head>
+<body>
+    <button onclick="downloadFile()">弹出解析框</button><br>
+</body>
+</html>

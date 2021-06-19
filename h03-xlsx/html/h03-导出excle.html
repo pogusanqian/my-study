@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.core.min.js"></script>
+    <script>
+      function downloadXlsx(filename) {
+        const data = [
+          ['f_name', 'f_age', 'f_school_id'],
+          ['张三', 23, '0901'],
+          ['张三', 23, '0901'],
+          ['张三', 23, '0901'],
+          ['张三', 23, '0901'],
+        ];
+        // 创建工作目录
+        const wb = XLSX.utils.book_new();
+        // 将文件写入到工作表中
+        const ws = XLSX.utils.aoa_to_sheet(data);
+        // 将工作表合并到工作簿中, 并指定工作表名称
+        XLSX.utils.book_append_sheet(wb, ws);
+        // 导出文件, 并指定文件名称
+        XLSX.writeFile(wb, 'myexcle.xlsx');
+      }
+    </script>
+</head>
+<body>
+<button onclick="downloadXlsx()">下载</button>
+<br>
+</body>
+</html>

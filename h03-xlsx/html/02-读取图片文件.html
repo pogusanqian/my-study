@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.core.min.js"></script>
+    <script>
+      function downloadFile() {
+        // 动态节点的创建方式, 避免重复创建同一个对象
+        if (!document.getElementById('readLocalFile')) {
+          // 创建一个<input type="file">标签
+          let inputFile = document.createElement("input");
+          inputFile.setAttribute("id", "readLocalFile");
+          inputFile.setAttribute("type", "file");
+          inputFile.setAttribute("multiple", false);  //是否可以多选。这里设置为否
+          // inputFile.click();                       //相当于自动点击了inputFile框
+          document.body.appendChild(inputFile);
+
+          // 给dom元素添加了一个事件监听函数
+          document.getElementById('readLocalFile').addEventListener('change', function (e) {   //选择文件后执行
+            // e是一个Event对象
+            let files = e.target.files;
+            // files是一个FileList对象, 因为可以选择多个, 这里只让选择了一个
+            if (files.length == 0) return;
+            let file = files[0];
+            let reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function (e) {   //处理load事件。读取操作完成时触发。
+              let data = e.target.result;    // result属性就是读取的文件信息
+              console.log(data);
+            };
+          });
+        } else {
+          document.getElementById('readLocalFile');  //已有dom元素则点击
+        }
+
+      }
+    </script>
+</head>
+<body>
+    <button onclick="downloadFile()">下载</button><br>
+</body>
+</html>
