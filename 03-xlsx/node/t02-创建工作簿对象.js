@@ -2,7 +2,7 @@ const xlsx = require('xlsx');
 
 const workBook = xlsx.utils.book_new(); // 创建一个工作簿
 const wsData = [
-  ["S", "h", "e", "e", "t", "J", "S"],
+  ['S', 'h', 'e', 'e', 't', 'J', 'S'],
   [1, 2, 3, 4, 5],
   [11, 22, 33, 44, 55],
 ];

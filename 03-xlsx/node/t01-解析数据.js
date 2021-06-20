@@ -35,4 +35,4 @@ const fs = require('fs');
   // 获取单元格
   const cell = worksheet['A1', 'B1'];
   console.log(cell);
-})();
+}());

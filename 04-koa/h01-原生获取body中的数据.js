@@ -12,7 +12,6 @@ router.post('/test', async (ctx, next) => {
   ctx.body = '成功';
 });
 
-
 app.use(router.routes());
 app.use(router.allowedMethods());
 app.listen(3000);
