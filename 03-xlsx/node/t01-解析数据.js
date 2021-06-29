@@ -27,10 +27,6 @@ const fs = require('fs');
       'f_is_shop_administrator',
     ],
   });
-  // json.splice(0, 1); // 删除原本的exle表中的第一行数据
-  // console.log(json.find(item => item.f_id === 5));
-  // console.log(worksheet);
-  // console.log(json);
 
   // 获取单元格
   const cell = worksheet['A1', 'B1'];
