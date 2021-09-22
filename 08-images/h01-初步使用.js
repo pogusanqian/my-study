@@ -1,4 +1,6 @@
 const images = require('images');
+const textToSvg = require('text-to-svg');
+const svgToPng = require('svg2png');
 
 // 从指定文件加载并解码文件
 const img1 = images('D:\\Code\\my-study\\sources\\imgs\\社群背景图.png');
