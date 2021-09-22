@@ -20,7 +20,7 @@ const svg = textToSVG.getSVG('美女_1001', {
   anchor: 'top',
 }).replace(flag, `style="fill:rgba(0,0,0,0.3);" ${flag}`);
 
-console.log(svg);
+// console.log(svg);
 
 // 绘制图片
 SvgToPng(svg).then((buffer) => {

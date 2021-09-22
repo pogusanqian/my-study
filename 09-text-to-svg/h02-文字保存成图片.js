@@ -4,7 +4,7 @@ const fs = require('fs');
 
 // 创建一个svg, 并把svg转换成图片
 const textToSVG = TextToSVG.loadSync();
-const textToSVG2 = TextToSVG.loadSync('./fonts/SIMYOU.TTF');
+const textToSVG2 = TextToSVG.loadSync('../sources/fonts/SIMYOU.TTF');
 const options = {
   x: 0,
   y: 0,
