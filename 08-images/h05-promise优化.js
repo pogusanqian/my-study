@@ -49,23 +49,23 @@ async function getBufferArr(qrArr) {
  * @returns {Promise<void>}
  */
 async function zipImages() {
-  console.time('oneTime');
+  console.time('总时间');
   const zip = new JSZip();
   const width = 702;
   const heigth = 1032;
   const partentImg = Images('D:\\Code\\my-study\\sources\\imgs\\社群背景图.png').size(width, heigth);
 
   // TODO 这里的qrCode因该是一个base64字符串
-  console.time('twoTime');
+  console.time('加载图片');
   const qrArr = [];
   // eslint-disable-next-line no-plusplus
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 1000; i++) {
     qrArr.push({
       qrCode: Images('D:\\Code\\my-study\\sources\\imgs\\美女1.jpg'),
       qrNmae: `美女_${i}`,
     });
   }
-  console.timeEnd('twoTime');
+  console.timeEnd('加载图片');
 
   // svgBufferArr和qrCodeArr是一一对应的
   let svgBufferArr = [];
@@ -73,12 +73,14 @@ async function zipImages() {
   const qrTwoDimenArr = oneToTwoDimen(qrArr, 100);
   // getBufferArr()已经使用promise.all开启了多线程, 这个for循环中就不再开启多线程
   // eslint-disable-next-line no-plusplus
+  console.time('文字转图片');
   for (let i = 0; i < qrTwoDimenArr.length; i++) {
     // eslint-disable-next-line no-await-in-loop
     const [arr1, arr2] = await getBufferArr(qrTwoDimenArr[i]);
     svgBufferArr = svgBufferArr.concat(arr1);
     qrCodeArr = qrCodeArr.concat(arr2);
   }
+  console.timeEnd('文字转图片');
 
   // 合成图片
   svgBufferArr.forEach((svgBuffer, index) => {
@@ -88,8 +90,13 @@ async function zipImages() {
     zip.file(`${index}_美女.png`, backgroundImg.encode('png'));
   });
 
-  await zip.generateNodeStream({ type: 'nodebuffer', streamFiles: true }).pipe(fs.createWriteStream('./imgs/out.zip'));
-  console.timeEnd('oneTime');
+  console.time('压缩');
+  const buffers = await zip.generateNodeStream({ type: 'nodebuffer', streamFiles: true });
+  console.timeEnd('压缩');
+  console.time('下载');
+  buffers.pipe(fs.createWriteStream('./imgs/out.zip'));
+  console.timeEnd('下载');
+  console.timeEnd('总时间');
 }
 
 zipImages();
