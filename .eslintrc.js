@@ -5,7 +5,7 @@ module.exports = {
     es2020: true,
     node: true,
   },
-  extends: 'airbnb',
+  // extends: 'airbnb',
   parserOptions: {
     ecmaVersion: 12,
   },
@@ -13,5 +13,7 @@ module.exports = {
     'global-require': 'off',
     'import/no-dynamic-require': 'off',
     'no-unused-expressions': 'off',
+    'operator-linebreak': ['error', 'before', { overrides: { '=': 'none' } }],
+    'max-len': ['error', { code: 120, tabWidth: 2 }],
   },
 };

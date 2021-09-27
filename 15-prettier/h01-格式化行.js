@@ -1,0 +1,3 @@
+const hahahhahahahahahahhahahahahaahahahahahah = 23;
+
+const result1 =  hahahhahahahahahahhahahahahaahahahahahah + hahahhahahahahahahhahahahahaahahahahahah + hahahhahahahahahahhahahahahaahahahahahah + hahahhahahahahahahhahahahahaahahahahahah + hahahhahahahahahahhahahahahaahahahahahah;
