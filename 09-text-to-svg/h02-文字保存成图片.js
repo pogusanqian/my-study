@@ -14,5 +14,5 @@ const options = {
 const svg = textToSVG.getSVG('美女_1001', options);
 const svg2 = textToSVG2.getSVG('美女_1001', options);
 
-SvgToPng(svg).then((buffer) => fs.writeFileSync('添加文字1.png', buffer));
-SvgToPng(svg2).then((buffer) => fs.writeFileSync('添加文字2.png', buffer));
+SvgToPng(svg).then((buffer) => fs.writeFileSync('../sources/nocommit/默认文字1.png', buffer));
+SvgToPng(svg2).then((buffer) => fs.writeFileSync('../sources/nocommit/使用文字2.png', buffer));

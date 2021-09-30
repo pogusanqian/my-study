@@ -33,12 +33,12 @@ async function zipImages() {
   const textToSVG = TextToSVG.loadSync();
   const width = 702;
   const heigth = 1032;
-  const partentImg = Images('D:\\Code\\my-study\\sources\\imgs\\社群背景图.png').size(width, heigth);
+  const partentImg = Images('../sources/imgs/社群背景图.png').size(width, heigth);
 
   // 1000张用了两分钟(没有文字的情况下), 有文字的情况下, 100张就用两分钟
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 10; i++) {
     const img1 = Images(partentImg);
-    const img2 = Images('D:\\Code\\my-study\\sources\\imgs\\美女1.jpg');
+    const img2 = Images('../sources/imgs/美女1.jpg');
     img2.size(480, 480);
     // 生成svg, 并转换成buffer
     const svg = textToSVG.getSVG(`美女_${i}`, svgParams).replace(flag, `style="fill:rgba(0,0,0,0.3);" ${flag}`);
@@ -53,7 +53,7 @@ async function zipImages() {
   // generateNodeStream生成了一个压缩文件对象, pipe则是下载到了本地, finish则是下载完成之后的事件
   zip
     .generateNodeStream({type: 'nodebuffer', streamFiles: true})
-    .pipe(fs.createWriteStream('./imgs/out.zip'))
+    .pipe(fs.createWriteStream('../sources/nocommit/out.zip'))
     .on('finish', () => {
       console.timeEnd('oneTime');
     });

@@ -53,15 +53,15 @@ async function zipImages() {
   const zip = new JSZip();
   const width = 702;
   const heigth = 1032;
-  const partentImg = Images('D:\\Code\\my-study\\sources\\imgs\\社群背景图.png').size(width, heigth);
+  const partentImg = Images('../sources/imgs/社群背景图.png').size(width, heigth);
 
   // TODO 这里的qrCode因该是一个base64字符串
   console.time('加载图片');
   const qrArr = [];
   // eslint-disable-next-line no-plusplus
-  for (let i = 0; i < 1000; i++) {
+  for (let i = 0; i < 10; i++) {
     qrArr.push({
-      qrCode: Images('D:\\Code\\my-study\\sources\\imgs\\美女1.jpg'),
+      qrCode: Images('../sources/imgs/美女1.jpg'),
       qrNmae: `美女_${i}`,
     });
   }
@@ -94,7 +94,7 @@ async function zipImages() {
   const buffers = await zip.generateNodeStream({ type: 'nodebuffer', streamFiles: true });
   console.timeEnd('压缩');
   console.time('下载');
-  buffers.pipe(fs.createWriteStream('./imgs/out.zip'));
+  buffers.pipe(fs.createWriteStream('../sources/nocommit/out.zip'));
   console.timeEnd('下载');
   console.timeEnd('总时间');
 }
