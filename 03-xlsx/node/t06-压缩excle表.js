@@ -4,28 +4,25 @@ const JSZip = require('jszip');
 
 const zip = new JSZip();
 const wb = XLSX.utils.book_new();
-const title = {f_age: '年龄', f_name: '姓名', f_sex: '性别'};
+const title = { f_age: '年龄', f_name: '姓名', f_sex: '性别' };
 const data = [
-	{f_name: '张三', f_age: 23, f_sex: '男'},
-	{f_name: '张三', f_age: 5, f_sex: '女'},
+  { f_name: '张三', f_age: 23, f_sex: '男' },
+  { f_name: '张三', f_age: 5, f_sex: '女' },
 ];
 // 手动添加, 作为第一行数据
 data.splice(0, 0, title);
 const ws = XLSX.utils.json_to_sheet(data, {
-	// header: ['f_name', 'f_age', 'f_sex'], // 指定顺序, 如果不指定顺序的话, 就市按照title中key的顺序
-	skipHeader: true, // 不要表头
+  // header: ['f_name', 'f_age', 'f_sex'], // 指定顺序, 如果不指定顺序的话, 就市按照title中key的顺序
+  skipHeader: true, // 不要表头
 });
 XLSX.utils.book_append_sheet(wb, ws);
 
 // 转换成arraybuffer类型
 const wbout = XLSX.write(wb, {
-	type: 'array',
-	bookType: 'xlsx',
-	bookSST: true,
+  type: 'array',
+  bookType: 'xlsx',
+  bookSST: true,
 });
 
 zip.file('aaa.xlsx', wbout);
-zip.generateNodeStream({type: 'nodebuffer', streamFiles: true}).pipe(fs.createWriteStream('./out.zip'));
-
-
-
+zip.generateNodeStream({ type: 'nodebuffer', streamFiles: true }).pipe(fs.createWriteStream('./out.zip'));
