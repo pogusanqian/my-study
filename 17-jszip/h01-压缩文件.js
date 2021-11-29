@@ -5,8 +5,8 @@ const JSZip = require('jszip');
 const zip = new JSZip();
 
 // 往压缩包中添加文件, 如果文件同名, 后者会把前者覆盖掉
-zip.file('hello.txt', '你好, 世界;');
-zip.file('hello.txt', 'Hello World');
+zip.file('my.txt', '你好, 世界;');
+zip.file('my.txt', 'Hello World');
 
 // 往压缩包中压缩流文件
 // 往压缩包中压缩流文件
