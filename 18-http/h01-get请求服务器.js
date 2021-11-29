@@ -5,7 +5,7 @@ const path = require('path');
 const port = 3000;
 
 const server = http.createServer((req, res) => {
-  console.log(req);
+  console.log(req.url);
   // 获取请求路径
   const pathname = req.url;
   if (pathname === '/getTxt') {
