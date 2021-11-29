@@ -1,15 +1,17 @@
 const http = require('http');
 const fs = require('fs');
-const path = require('path');
+const { URL } = require('url');
 
 const port = 3000;
 
 const server = http.createServer((req, res) => {
-  console.log(req.url);
-  // 获取请求路径
-  const pathname = req.url;
+  // 获取请求路径, 由于这个服务器是使用http模块搭建的, 所以这里的前缀只能是http
+  const urlObj = new URL(req.url, `http://${req.headers.host}`);
+  const params = urlObj.searchParams;
+  const { pathname } = urlObj;
   if (pathname === '/getTxt') {
     res.statusCode = 200;
+    console.log(params);
     // res.setHeader('Content-Type', 'text/plain;charset=gbk') // 也可以通过请求头设置编码
     res.setHeader('Content-Type', 'text/plain;charset=utf-8');
     res.end('你好世界'); // 设置相应字符串的编码, 默认是utf-8
