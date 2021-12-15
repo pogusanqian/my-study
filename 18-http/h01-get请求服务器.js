@@ -7,18 +7,16 @@ const port = 3000;
 const server = http.createServer((req, res) => {
   // 获取请求路径, 由于这个服务器是使用http模块搭建的, 所以这里的前缀只能是http
   const urlObj = new URL(req.url, `http://${req.headers.host}`);
-  const params = urlObj.searchParams;
-  const { pathname } = urlObj;
-  if (pathname === '/getTxt') {
+  const { pathname, searchParams } = urlObj;
+  console.log(searchParams);
+  if (pathname === '/getTxt' && req.method === 'GET') { // 判断请求路径和请求方法
     res.statusCode = 200;
-    console.log(params);
-    // res.setHeader('Content-Type', 'text/plain;charset=gbk') // 也可以通过请求头设置编码
     res.setHeader('Content-Type', 'text/plain;charset=utf-8');
     res.end('你好世界'); // 设置相应字符串的编码, 默认是utf-8
   } else if (pathname === '/getJson') {
     res.statusCode = 200;
+    // 响应给前端的是一个json字符串, 然后浏览器根据响应头将字符串解析成了json对象, 如果没有这个响应头, 浏览器就会按照text/plain解析
     res.setHeader('Content-Type', 'application/json');
-    // 响应给前端的是一个json字符串, 然后浏览器根据响应头将字符串解析成了json对象,
     res.end(JSON.stringify({
       name: '张三',
       age: 23,

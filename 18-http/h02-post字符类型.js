@@ -1,28 +1,31 @@
 const http = require('http');
-const { URL } = require('url');
+const querystring = require('querystring');
 
+// 不在考虑路由的问题了, 原文链接: https://www.jianshu.com/p/9e0129b01930
 const server = http.createServer((req, res) => {
-  const urlObj = new URL(req.url, `http://${req.headers.host}`);
-  const { pathname } = urlObj;
-  // 获取字符流数据
-  let body = '';
-  req.on('data', (chunk) => { // http中的post请求, 应该分包传送过来的
-    body += chunk;
+  const body = []; // 接收 post 数据
+  req.on('data', (chuck) => { // chuck 是二进制数据
+    body.push(chuck);
+    // str += chunk; 使用字符串来接收
   });
+
   req.on('end', () => {
-    if (pathname === '/postStudent' && req.method === 'POST') { // 判断路径和请求方式
-      // 根据请求头将字符串转换成对象
-      if (req.headers['content-type'] === 'application/json') {
-        console.log('JSON请求参数', JSON.parse(body));
-      } else {
-        console.log('其他请求参数: ', body);
-      }
-      res.end('请求成功');
+    // 将二进制数组拼接成一个 Buffer 对象, 并将buffer转换成字符串
+    const buffer = Buffer.concat(body);
+    const str = buffer.toString();
+    const contentType = req.headers['content-type'];
+
+    if (contentType === 'application/json') {
+      console.log(str); // { name: '张三', age: 23 }JSON字符串
+      console.log(JSON.parse(str)); // { name: '张三', age: 23 }
+    } else if (contentType === 'application/x-www-form-urlencoded') {
+      console.log(str); // name=%E5%BC%A0%E4%B8%89&age=23
+      console.log(querystring.parse(str)); // 解析数据
     } else {
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'text/plain;charset=utf-8');
-      res.end(`路径出错:${pathname}`);
+      console.log(str);
     }
+
+    res.end('请求成功');
   });
 });
 
