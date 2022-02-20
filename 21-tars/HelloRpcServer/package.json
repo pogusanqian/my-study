@@ -1,0 +1,33 @@
+{
+  "name": "HelloRpcServer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=dev ./node_modules/.bin/nodemon app.js",
+    "eslint": "./node_modules/.bin/eslint ./ --ext .js",
+    "upload": "./node_modules/.bin/nodetools upload"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@tars/nodetools-cli": "^0.0.10",
+    "babel-eslint": "^10.1.0",
+    "cross-env": "^7.0.2",
+    "eslint": "^7.3.1",
+    "eslint-config-alloy": "3.7.3",
+    "nodemon": "^1.17.5"
+  },
+  "dependencies": {
+    "@tars/rpc": "^2.0.11"
+  },
+  "tars": {
+    "tarsurl": "",
+    "token": "",
+    "platform": "linux",
+    "app": "Hello",
+    "service": "HelloRpcServer",
+    "obj": "HelloObj",
+    "set": ""
+  }
+}
