@@ -1,0 +1,5 @@
+module Hello { // 这个相当于是一个包
+  interface Test { // 相当于是一个接口
+    int add(int a, int b, out int c); // 接口定义的方法
+  };
+}; 

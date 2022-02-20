@@ -2,9 +2,9 @@
   "name": "HelloHttpServer",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "src/app.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=dev ./node_modules/.bin/nodemon app.js",
+    "dev": "cross-env NODE_ENV=dev ./node_modules/.bin/nodemon src/app.js",
     "eslint": "./node_modules/.bin/eslint ./ --ext .js",
     "upload": "./node_modules/.bin/nodetools upload"
   },
@@ -19,6 +19,7 @@
     "nodemon": "^1.17.5"
   },
   "dependencies": {
+    "@tars/rpc": "^2.0.14",
     "koa": "^2.11.0",
     "koa-router": "^8.0.8"
   },
