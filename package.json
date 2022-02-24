@@ -10,6 +10,7 @@
   "author": "pogusanqian",
   "license": "ISC",
   "dependencies": {
+    "@tars/rpc": "^2.0.14",
     "FileSaver": "^0.10.0",
     "axios": "^0.21.1",
     "express": "^4.17.2",
