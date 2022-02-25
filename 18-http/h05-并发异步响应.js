@@ -6,12 +6,12 @@ const server = http.createServer((req, res) => {
   const { pathname } = urlObj;
 
   if (pathname == '/getStudents') {
-    const sql = `SELECT * FROM t_student`;
+    const sql = `SELECT * FROM t_student limit 10`;
     DataHubDao.querySql(sql).then(data => res.end(JSON.stringify(data))).catch(err => console.error(err));
   } else if (pathname == '/insertStudents') {
     setTimeout(() => {
       const sql = "INSERT t_student(f_name, f_school_id) VALUE('张三', '1001')";
-      DataHubDao.querySql(sql).then(data => res.end(JSON.stringify(data))).catch(err => console.error(err));
+      DataHubDao.doSql(sql).then(data => res.end(JSON.stringify(data))).catch(err => console.error(err));
     }, 5000);
   } else {
     res.end('请求路径错误');

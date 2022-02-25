@@ -10,6 +10,10 @@ class DataHubDao {
   static async querySql(sql) {
     return await sequelize.query(sql, { type: QueryTypes.SELECT });
   }
+
+  static async doSql(sql) {
+    return await sequelize.query(sql);
+  }
 }
 
 module.exports = DataHubDao;

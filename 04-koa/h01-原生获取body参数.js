@@ -1,12 +1,26 @@
 const Koa = require('koa');
 const KoaRouter = require('koa-router');
-const getPostData = require('./getPostData');
 
 const app = new Koa();
 const router = new KoaRouter();
 
+function getPostData(ctx) {
+  return new Promise(((resolve, reject) => {
+    try {
+      let str = '';
+      ctx.req.on('data', (data) => {
+        str += data;
+      });
+      ctx.req.on('end', (chunk) => {
+        resolve(str);
+      });
+    } catch (e) {
+      reject(e);
+    }
+  }));
+}
+
 router.post('/test', async (ctx, next) => {
-  // 主要是通过data事件读取相关的值
   const body = await getPostData(ctx);
   console.log('post参数', body);
   ctx.body = '成功';

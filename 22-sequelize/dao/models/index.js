@@ -18,5 +18,4 @@ const sequelize = new Sequelize('db_school', 'root', '123123', {
         typeCast: true
     },
 });
-// TODO 这里需要将model目录中的ORM对象挂载到sequelize的models属性中
 module.exports = sequelize;
