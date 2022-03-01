@@ -3,3 +3,4 @@ node_modules/
 sources/nocommit
 /**/node_modules
 /**/*.tgz
+/**/*.env
