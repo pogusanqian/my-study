@@ -8,9 +8,11 @@
 
 "use strict";
 
+var assert    = require("assert");
 var TarsStream = require("@tars/stream");
 var TarsError  = require("@tars/rpc").error;
 
+var _hasOwnProperty = Object.prototype.hasOwnProperty;
 var _makeError = function (data, message, type) {
     var error = new Error(message || "");
     error.request = data.request;
@@ -52,6 +54,66 @@ Util.CalculateProxy.prototype.setVersion = function (iVersion) {
 
 Util.CalculateProxy.prototype.getVersion = function () {
     return this._worker.version;
+};
+
+Util.Student = function() {
+    this.name = "";
+    this.age = 0;
+    this.sex = "";
+    this.schoolId = "";
+    this._classname = "Util.Student";
+};
+Util.Student._classname = "Util.Student";
+Util.Student._write = function (os, tag, value) { os.writeStruct(tag, value); };
+Util.Student._read  = function (is, tag, def) { return is.readStruct(tag, true, def); };
+Util.Student._readFrom = function (is) {
+    var tmp = new Util.Student;
+    tmp.name = is.readString(0, true, "");
+    tmp.age = is.readInt32(1, false, 0);
+    tmp.sex = is.readString(2, false, "");
+    tmp.schoolId = is.readString(3, false, "");
+    return tmp;
+};
+Util.Student.prototype._writeTo = function (os) {
+    os.writeString(0, this.name);
+    os.writeInt32(1, this.age);
+    os.writeString(2, this.sex);
+    os.writeString(3, this.schoolId);
+};
+Util.Student.prototype._equal = function () {
+    assert.fail("this structure not define key operation");
+};
+Util.Student.prototype._genKey = function () {
+    if (!this._proto_struct_name_) {
+        this._proto_struct_name_ = "STRUCT" + Math.random();
+    }
+    return this._proto_struct_name_;
+};
+Util.Student.prototype.toObject = function() { 
+    return {
+        "name" : this.name,
+        "age" : this.age,
+        "sex" : this.sex,
+        "schoolId" : this.schoolId
+    };
+};
+Util.Student.prototype.readFromObject = function(json) { 
+    _hasOwnProperty.call(json, "name") && (this.name = json.name);
+    _hasOwnProperty.call(json, "age") && (this.age = json.age);
+    _hasOwnProperty.call(json, "sex") && (this.sex = json.sex);
+    _hasOwnProperty.call(json, "schoolId") && (this.schoolId = json.schoolId);
+    return this;
+};
+Util.Student.prototype.toBinBuffer = function () {
+    var os = new TarsStream.TarsOutputStream();
+    this._writeTo(os);
+    return os.getBinBuffer();
+};
+Util.Student.new = function () {
+    return new Util.Student();
+};
+Util.Student.create = function (is) {
+    return Util.Student._readFrom(is);
 };
 
 var __Util_Calculate$add$IF = {
@@ -136,6 +198,83 @@ Util.CalculateProxy.prototype.add = function (a, b) {
     }
 };
 Util.CalculateProxy.add = __Util_Calculate$add$IF;
+
+var __Util_Calculate$show$IF = {
+    "name" : "show",
+    "return" : "Util.Student",
+    "arguments" : [{
+        "name" : "stuReq",
+        "class" : "Util.Student",
+        "direction" : "in"
+    }, {
+        "name" : "stuRsp",
+        "class" : "Util.Student",
+        "direction" : "out"
+    }]
+};
+
+var __Util_Calculate$show$IE = function (stuReq) {
+    var os = new TarsStream.TarsOutputStream();
+    os.writeStruct(1, stuReq);
+    return os.getBinBuffer();
+};
+
+var __Util_Calculate$show$ID = function (data) {
+    try {
+        var is = new TarsStream.TarsInputStream(data.response.sBuffer);
+        return {
+            "request" : data.request,
+            "response" : {
+                "costtime" : data.request.costtime,
+                "return" : is.readStruct(0, true, Util.Student),
+                "arguments" : {
+                    "stuRsp" : is.readStruct(2, true, Util.Student)
+                }
+            }
+        };
+    } catch (e) {
+        throw _makeError(data, e.message, TarsError.CLIENT.DECODE_ERROR);
+    }
+};
+
+var __Util_Calculate$show$PE = function (stuReq, __$PROTOCOL$VERSION) {
+    var tup = new TarsStream.UniAttribute();
+    tup.tupVersion = __$PROTOCOL$VERSION;
+    tup.writeStruct("stuReq", stuReq);
+    return tup;
+};
+
+var __Util_Calculate$show$PD = function (data) {
+    try {
+        var tup = data.response.tup;
+        return {
+            "request" : data.request,
+            "response" : {
+                "costtime" : data.request.costtime,
+                "return" : tup.readStruct("", Util.Student, new Util.Student),
+                "arguments" : {
+                    "stuRsp" : tup.readStruct("stuRsp", Util.Student)
+                }
+            }
+        };
+    } catch (e) {
+        throw _makeError(data, e.message, TarsError.CLIENT.DECODE_ERROR);
+    }
+};
+
+var __Util_Calculate$show$ER = function (data) {
+    throw _makeError(data, "Call Calculate::show failed");
+};
+
+Util.CalculateProxy.prototype.show = function (stuReq) {
+    var version = this._worker.version;
+    if (version === TarsStream.Tup.TUP_SIMPLE || version === TarsStream.Tup.TUP_COMPLEX) {
+        return this._worker.tup_invoke("show", __Util_Calculate$show$PE(stuReq, version), arguments[arguments.length - 1], __Util_Calculate$show$IF).then(__Util_Calculate$show$PD, __Util_Calculate$show$ER);
+    } else {
+        return this._worker.tars_invoke("show", __Util_Calculate$show$IE(stuReq), arguments[arguments.length - 1], __Util_Calculate$show$IF).then(__Util_Calculate$show$ID, __Util_Calculate$show$ER);
+    }
+};
+Util.CalculateProxy.show = __Util_Calculate$show$IF;
 
 var __Util_Calculate$sub$IF = {
     "name" : "sub",

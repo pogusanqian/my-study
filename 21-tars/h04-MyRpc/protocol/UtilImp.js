@@ -16,4 +16,9 @@ Util.CalculateImp.prototype.sub = function (current, a, b, c) {
     current.sendResponse(0, c);
 };
 
+Util.CalculateImp.prototype.show = function (current, stuReq, stuRsp) {
+    stuRsp =stuReq;
+    current.sendResponse(stuReq, stuRsp);
+};
+
 

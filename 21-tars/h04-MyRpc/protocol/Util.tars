@@ -1,6 +1,14 @@
 module Util {
+  struct Student {
+    0 require string name;
+    1 optional int age;
+    2 optional string sex;
+    3 optional string schoolId;
+  };
+
   interface Calculate {
     int add(int a, int b, out int c);
     int sub(int a, int b, out int c);
+    Student show(Student stuReq, out Student stuRsp);
   };
 }; 

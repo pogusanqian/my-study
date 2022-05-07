@@ -12,8 +12,70 @@ var assert    = require("assert");
 var TarsStream = require("@tars/stream");
 var TarsError  = require("@tars/rpc").error;
 
+var _hasOwnProperty = Object.prototype.hasOwnProperty;
+
 var Util = Util || {};
 module.exports.Util = Util;
+
+Util.Student = function() {
+    this.name = "";
+    this.age = 0;
+    this.sex = "";
+    this.schoolId = "";
+    this._classname = "Util.Student";
+};
+Util.Student._classname = "Util.Student";
+Util.Student._write = function (os, tag, value) { os.writeStruct(tag, value); };
+Util.Student._read  = function (is, tag, def) { return is.readStruct(tag, true, def); };
+Util.Student._readFrom = function (is) {
+    var tmp = new Util.Student;
+    tmp.name = is.readString(0, true, "");
+    tmp.age = is.readInt32(1, false, 0);
+    tmp.sex = is.readString(2, false, "");
+    tmp.schoolId = is.readString(3, false, "");
+    return tmp;
+};
+Util.Student.prototype._writeTo = function (os) {
+    os.writeString(0, this.name);
+    os.writeInt32(1, this.age);
+    os.writeString(2, this.sex);
+    os.writeString(3, this.schoolId);
+};
+Util.Student.prototype._equal = function () {
+    assert.fail("this structure not define key operation");
+};
+Util.Student.prototype._genKey = function () {
+    if (!this._proto_struct_name_) {
+        this._proto_struct_name_ = "STRUCT" + Math.random();
+    }
+    return this._proto_struct_name_;
+};
+Util.Student.prototype.toObject = function() { 
+    return {
+        "name" : this.name,
+        "age" : this.age,
+        "sex" : this.sex,
+        "schoolId" : this.schoolId
+    };
+};
+Util.Student.prototype.readFromObject = function(json) { 
+    _hasOwnProperty.call(json, "name") && (this.name = json.name);
+    _hasOwnProperty.call(json, "age") && (this.age = json.age);
+    _hasOwnProperty.call(json, "sex") && (this.sex = json.sex);
+    _hasOwnProperty.call(json, "schoolId") && (this.schoolId = json.schoolId);
+    return this;
+};
+Util.Student.prototype.toBinBuffer = function () {
+    var os = new TarsStream.TarsOutputStream();
+    this._writeTo(os);
+    return os.getBinBuffer();
+};
+Util.Student.new = function () {
+    return new Util.Student();
+};
+Util.Student.create = function (is) {
+    return Util.Student._readFrom(is);
+};
 
 Util.CalculateImp = function () { 
     this._name   = undefined;
@@ -163,6 +225,60 @@ Util.CalculateImp.prototype.__sub = function (current, binBuffer) {
     current.sendResponse = __Util_Calculate$sub$RE;
 
     this.sub(current, a, b, c);
+
+    return TarsError.SUCCESS;
+};
+
+Util.CalculateImp.prototype.show = function () {
+    assert.fail("show function not implemented");
+};
+
+var __Util_Calculate$show$RE = function (_ret, stuRsp) {
+    if (this.getRequestVersion() === TarsStream.Tup.TUP_SIMPLE || this.getRequestVersion() === TarsStream.Tup.TUP_COMPLEX) {
+        var tup = new TarsStream.UniAttribute();
+        tup.tupVersion = this.getRequestVersion();
+        tup.writeStruct("", _ret);
+        tup.writeStruct("stuRsp", stuRsp);
+
+        this.doResponse(tup.encode());
+    } else if (this.getRequestVersion() === TarsStream.Tup.JSON_VERSION) {
+        var _data_ = {};
+        _data_["tars_ret"] = _ret;
+        _data_["stuRsp"] = stuRsp.toObject ? stuRsp.toObject() : stuRsp;
+
+         this.doResponse(new TarsStream.BinBuffer(Buffer.from(JSON.stringify(_data_))));
+    } else {
+        var os = new TarsStream.TarsOutputStream();
+        os.writeStruct(0, _ret);
+        os.writeStruct(2, stuRsp);
+
+        this.doResponse(os.getBinBuffer());
+    }
+};
+
+Util.CalculateImp.prototype.__show = function (current, binBuffer) {
+    var stuReq = null;
+    var stuRsp = null;
+
+    if (current.getRequestVersion() === TarsStream.Tup.TUP_SIMPLE || current.getRequestVersion() === TarsStream.Tup.TUP_COMPLEX) {
+        var tup = new TarsStream.UniAttribute();
+        tup.tupVersion = current.getRequestVersion();
+        tup.decode(binBuffer);
+        stuReq = tup.readStruct("stuReq", Util.Student);
+        stuRsp = tup.readStruct("stuRsp", Util.Student, new Util.Student);
+    } else if (current.getRequestVersion() === TarsStream.Tup.JSON_VERSION) {
+        var _data_ = JSON.parse(binBuffer.toNodeBuffer());
+        stuReq = _data_.stuReq;
+        stuRsp = _data_.stuRsp || new Util.Student;
+    } else {
+        var is = new TarsStream.TarsInputStream(binBuffer);
+        stuReq = is.readStruct(1, true, Util.Student);
+        stuRsp = is.readStruct(2, false, Util.Student);
+    }
+
+    current.sendResponse = __Util_Calculate$show$RE;
+
+    this.show(current, stuReq, stuRsp);
 
     return TarsError.SUCCESS;
 };

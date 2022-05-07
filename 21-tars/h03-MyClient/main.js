@@ -8,3 +8,8 @@ const proxy = client.stringToProxy(Util.CalculateProxy, localStr);
 
 proxy.add(10, 20).then(data => console.log(data.response)).done();
 proxy.sub(10, 20).then(data => console.log(data.response)).done();
+
+// 格式化参数, 多余的参数会被tars进行过滤如name2, 没有的参数会被设置成默认值
+const stuReq = new Util.Student().readFromObject({sex:'男', name: '张三', name2 : '李四'});
+console.log('======', stuReq);
+proxy.show(stuReq).then(data => console.log(data.response)).done();

@@ -6,7 +6,7 @@ const svr = server.createServer(Util.CalculateImp);
 svr.start({
   name: 'Util.CalculateServer.CalculateObjAdapetr',
   servant: 'Util.CalculateServer.CalculateObj',
-  endpoint: 'tcp -h 192.168.124.13 -p 14001 -t 10000',
+  endpoint: 'tcp -h 127.0.0.1 -p 14001 -t 10000',
   maxconns: 200000,
   protocol: 'tars'
 });

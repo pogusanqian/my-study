@@ -1,6 +1,15 @@
 module Util {
+  struct Student {
+    0 require string name;
+    1 optional int age;
+    2 optional string sex;
+    3 optional string schoolId;
+  };
+
   interface Calculate {
     int add(int a, int b, out int c);
     int sub(int a, int b, out int c);
+    // Student定义的返回值是放到return参数中的, out定义的返回值是放到arguments参数中的
+    Student show(Student stuReq, out Student stuRsp);
   };
 }; 
